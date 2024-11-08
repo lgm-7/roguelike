@@ -31,7 +31,7 @@ class Player {
 class Monster {
   constructor(stage) {
     this.hp = 30 + (stage - 1) * 5;
-    this.damage = 2 + (stage - 1) * 2;
+    this.damage = 2 + (stage - 1) * getRandom(1,3);
   }
 
   attack(player) {
@@ -114,7 +114,7 @@ export async function startGame() {
         break;
       } else {
         console.log(chalk.green('다음 스테이지로 이동합니다'))
-        player.heal(getRandom(30, 40));
+        player.heal(getRandom(20, 40));
         stage++
         await new Promise(resolve => setTimeout(resolve, 1000))
       }
