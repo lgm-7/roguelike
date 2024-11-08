@@ -6,26 +6,32 @@ class Player {
     this.hp = 100;
   }
 
-  attack() {
+  attack(monster) {
     // 플레이어의 공격
-    const damage = 2
-    Monster.takeDamage(damage)
-    return Monster.hp
+    const damage = 12
+    monster.takeDamage(damage)
+    return damage
+  }
+
+  takeDamage(damage) {
+    this.hp -= damage;
   }
 }
 
 class Monster {
-  constructor() {
-    this.hp = 100;
+  constructor(stage) {
+    this.hp = 100+ (stage-1) * 10;
   }
 
-  attack() {
+  attack(player) {
     // 몬스터의 공격
+    const damage = 5;
+    player.takeDamage(damage);
+    return damage
   }
 
-  takeDamage() {
+  takeDamage(damage) {
     this.hp -= damage;
-    console.log(`${damage}의 피해를 입혔습니다. 남은 HP ${this.hp}`)
   }
 }
 
@@ -34,10 +40,10 @@ function displayStatus(stage, player, monster) {
   console.log(
     chalk.cyanBright(`| Stage: ${stage} `) +
     chalk.blueBright(
-      `| 플레이어 정보`,
+      `| 플레이어 정보 HP:${player.hp} Attack:${player.damage}`,
     ) +
     chalk.redBright(
-      `| 몬스터 정보 |`,
+      `| 몬스터 정보 | HP:${monster.hp} Attack:${monster.damage}`,
     ),
   );
   console.log(chalk.magentaBright(`=====================\n`));
@@ -63,9 +69,17 @@ const battle = async (stage, player, monster) => {
     logs.push(chalk.green(`${choice}를 선택하셨습니다.`));
     switch(choice) {
       case '1':
-        Player.attack(Monster);
+        const pa =player.attack(monster)
+        logs.push(chalk.redBright(`몬스터에게 ${pa}의 피해를 입혔습니다. 몬스터의 남은 HP: ${monster.hp}`))
+        if(monster.hp>0){
+          const ma = monster.attack(player)
+          logs.push(chalk.blueBright(`몬스터에게 ${ma}의 피해를 입었습니다. 플레이어의 남은 HP: ${player.hp}`));
+        }
         break;
-      case '2':console.log(chalk.yellow('아무것도 하지 않았습니다.'));
+      case '2':logs.push(chalk.yellow('아무것도 하지 않았습니다.'));
+       const ma = monster.attack(player)
+       logs.push(chalk.blueBright(`몬스터에게 ${ma}의 피해를 입었습니다. 플레이어의 남은 HP: ${player.hp}`));
+       break;
     }
   }
   
@@ -81,6 +95,10 @@ export async function startGame() {
     await battle(stage, player, monster);
 
     // 스테이지 클리어 및 게임 종료 조건
+    if(player.hp <=0){
+      console.log(chalk.red('게임 오버'));
+      break;
+    }
 
     stage++;
   }
