@@ -9,8 +9,13 @@ class Player {
   constructor() {
     this.hp = 100;
     this.damage = 3;
-    this.dagger = 0;
-    this.potion = 0;
+    this.items = {
+      dagger: 0,
+      potion: 0,
+      fire: 0,
+      ice: 0,
+    }
+
   }
 
   attack(monster) {
@@ -41,24 +46,24 @@ class Player {
   }
 
   usePotion() {
-      const healing = getRandom(5, 10);
-      this.heal(healing);
-      this.potion -= 1;
-      return healing;
-    }    
-    
-    addAtk(monster) {
-      const aatk = getRandom(1,2)
-      monster.hp -=  aatk
-      return aatk;
-      }
+    const healing = getRandom(5, 10);
+    this.heal(healing);
+    this.items.potion -= 1;
+    return healing;
+  }
+
+  addAtk(monster) {
+    const aatk = getRandom(1, 2)
+    monster.hp -= aatk
+    return aatk;
+  }
 }
 
 
 class Monster {
   constructor(stage) {
-    this.hp = 30+(stage-1)*14;
-    this.damage = 2+(stage-1)*1;
+    this.hp = 30 + (stage - 1) * 14;
+    this.damage = 2 + (stage - 1) * 1;
   }
 
   attack(player) {
@@ -74,20 +79,27 @@ class Monster {
 
 class Item {
   get(player) {
-    const chance = getRandom(1,100)
-    if(chance > 90) {
-      if(player.dagger === 0){
-        player.dagger = 1;
-       console.log(chalk.yellow('단검을 획득했습니다. 1~2 데미지를 추가로 줍니다'));
-      }else{ 
+    const chance = getRandom(1, 100)
+    if (chance > 90) {
+      if (player.items.dagger === 0) {
+        player.items.dagger = 1;
+        console.log(chalk.yellow('단검을 획득했습니다. 1~2 데미지를 추가로 줍니다'));
+      } else {
         console.log(chalk.yellow('이미 단검을 가지고있습니다.'));
       }
-    }
-     else 
-      if(chance > 70) {
-      player.potion += 1;
-      console.log(chalk.yellow('포션을 획득했습니다. 포션을 사용하면 5~10 HP를 얻습니다'));
-    }
+    } else
+      if (chance > 70) {
+        player.items.potion += 1;
+        console.log(chalk.yellow('HP증가 포션을 획득했습니다. 포션을 사용하면 5~10 HP를 얻습니다'));
+      } else
+        if (chance > 90) {
+          player.items.fire += 1;
+          console.log(chalk.yellow('화염 포션을 획득했습니다. 포션을 사용하면 몬스터에게 5~10의 데미지를 줍니다'));
+        } else
+          if (chance > 95) {
+            player.items.ice += 1;
+            console.log(chalk.yellow('빙결 포션을 획득했습니다. 포션을 사용하면 몬스터를 얼립니다'));
+          }
   }
 }
 
@@ -118,7 +130,7 @@ const battle = async (stage, player, monster) => {
         `\n1. 공격한다. 2. 연속공격(40%) 3. 도망친다(10%). 4. 아이템 사용`,
       ),
     );
-  
+
     const choice = readlineSync.question('당신의 선택은? ');
 
     // 플레이어의 선택에 따라 다음 행동 처리
@@ -127,17 +139,17 @@ const battle = async (stage, player, monster) => {
       case '1':
         const pa = player.attack(monster);
         logs.push(chalk.redBright(`몬스터에게 ${pa}의 피해를 입혔습니다. 몬스터의 남은 HP: ${monster.hp}`));
-        if(player.dagger === 1 ) {
-        const aatk = player.addAtk(monster)
-        logs.push(chalk.redBright(`몬스터에게 ${aatk}의 추가피해를 입혔습니다. 몬스터의 남은 HP: ${monster.hp}`));
+        if (player.items.dagger === 1) {
+          const aatk = player.addAtk(monster)
+          logs.push(chalk.redBright(`몬스터에게 ${aatk}의 추가피해를 입혔습니다. 몬스터의 남은 HP: ${monster.hp}`));
         }
         // 몬스터의 HP가 0 이하인지 체크
         if (monster.hp <= 0) {
           console.log(chalk.redBright(`몬스터에게 ${pa}의 피해를 입혔습니다. 몬스터의 남은 HP: ${monster.hp = 0}`))
-          if(player.dagger === 1 ) {
+          if (player.items.dagger === 1) {
             const aatk = player.addAtk(monster)
             console.log(chalk.redBright(`몬스터에게 ${aatk}의 추가피해를 입혔습니다. 몬스터의 남은 HP: ${monster.hp = 0}`));
-            }
+          }
           console.log(chalk.yellow(`몬스터를 쓰러트렸습니다.`))
           break;
         } else {
@@ -151,17 +163,17 @@ const battle = async (stage, player, monster) => {
           const pa1 = player.doubleatk(monster);
           logs.push(chalk.redBright(`몬스터에게 ${pa}의 피해를 입혔습니다.`));
           logs.push(chalk.redBright(`몬스터에게 ${pa1}의 피해를 입혔습니다. 몬스터의 남은 HP: ${monster.hp}`));
-          if(player.dagger === 1 ) {
+          if (player.items.dagger === 1) {
             const aatk = player.addAtk(monster)
             logs.push(chalk.redBright(`몬스터에게 ${aatk}의 추가피해를 입혔습니다. 몬스터의 남은 HP: ${monster.hp}`));
-            }
+          }
           if (monster.hp <= 0) {
             console.log(chalk.redBright(`몬스터에게 ${pa}의 피해를 입혔습니다.`))
             console.log(chalk.redBright(`몬스터에게 ${pa1}의 피해를 입혔습니다. 몬스터의 남은 HP: ${monster.hp = 0}`))
-            if(player.dagger === 1 ) {
+            if (player.items.dagger === 1) {
               const aatk = player.addAtk(monster)
               console.log(chalk.redBright(`몬스터에게 ${aatk}의 추가피해를 입혔습니다. 몬스터의 남은 HP: ${monster.hp = 0}`));
-              }
+            }
             console.log(chalk.yellow(`몬스터를 쓰러트렸습니다.`))
             break;
           }
@@ -186,20 +198,25 @@ const battle = async (stage, player, monster) => {
         logs.push(chalk.blueBright(`몬스터에게 ${ma}의 피해를 입었습니다. 플레이어의 남은 HP: ${player.hp}`));
         break;
       }
-      case '4': 
-      console.log(chalk.green(`사용할 아이템을 선택하세요: 1.HP증가 포션`));
-      console.log(`HP증가 포션 ${player.potion}개 보유중`);
-      const itemChoice = readlineSync.question('당신의 선택은? ');
-      logs.push(chalk.green(`${itemChoice}를 선택하셨습니다.`));
-       if (itemChoice === '1') {
-        if(player.potion>0){
-        const healing = player.usePotion()
-        logs.push(chalk.yellow(`포션을 사용하여 HP가 ${healing} 증가되었습니다. 남은 포션 수: ${player.potion}`))
-        } else {
-          logs.push(chalk.yellow('포션이 없습니다.'));
+      case '4':
+        console.log(chalk.green(`사용할 아이템을 선택하세요: 1.HP증가 포션 2.화염 포션 3.빙결 포션`));
+        console.log(chalk.magentaBright(`=====================`));
+        console.log(chalk.yellow(`HP증가 포션 ${player.items.potion}개 보유중 포션을 사용하면 5~10 HP를 얻습니다`));
+        console.log(chalk.magentaBright(`=====================`));
+        console.log(chalk.yellow(`화염 포션 ${player.items.fire}개 보유중 포션을 사용하면 몬스터에게 5~10의 데미지를 줍니다`));
+        console.log(chalk.magentaBright(`=====================`));
+        console.log(chalk.yellow(`빙결 포션 ${player.items.ice}개 보유중 포션을 사용하면 몬스터를 얼립니다`));
+        const itemChoice = readlineSync.question('당신의 선택은? ');
+        logs.push(chalk.green(`${itemChoice}를 선택하셨습니다.`));
+        if (itemChoice === '1') {
+          if (player.items.potion > 0) {
+            const healing = player.usePotion()
+            logs.push(chalk.yellow(`HP증가 포션을 사용하여 HP가 ${healing} 증가되었습니다. 남은 포션 수: ${player.items.potion}`))
+          } else {
+            logs.push(chalk.yellow('HP증가 포션이 없습니다.'));
+          }
         }
-       }
-       break;
+        break;
     }
   }
 
@@ -222,7 +239,7 @@ export async function startGame() {
         break;
       } else {
         console.log(chalk.green('다음 스테이지로 이동합니다'))
-        player.increaseDamage(getRandom(1,2))
+        player.increaseDamage(getRandom(1, 2))
         player.heal(getRandom(20, 40));
         item.get(player)
         stage++
