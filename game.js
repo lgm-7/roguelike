@@ -26,12 +26,17 @@ class Player {
     this.hp += healing
     console.log(`플레이어의 HP가 ${healing} 회복되었습니다`)
   }
+  doubleatk(monster){
+    const damage = getRandom(15, 20)
+    monster.takeDamage(damage)
+    return damage
+  }
 }
 
 class Monster {
   constructor(stage) {
     this.hp = 30 + (stage - 1) * 5;
-    this.damage = 2 + (stage - 1) * getRandom(1,3);
+    this.damage = 2 + (stage - 1) * 2;
   }
 
   attack(player) {
@@ -69,7 +74,7 @@ const battle = async (stage, player, monster) => {
 
     console.log(
       chalk.green(
-        `\n1. 공격한다 2. 도망친다.`,
+        `\n1. 공격한다 2.연속공격(40%) 3. 도망친다.`,
       ),
     );
     const choice = readlineSync.question('당신의 선택은? ');
@@ -91,7 +96,30 @@ const battle = async (stage, player, monster) => {
           logs.push(chalk.blueBright(`몬스터에게 ${ma}의 피해를 입었습니다. 플레이어의 남은 HP: ${player.hp}`));
         }
         break;
-      case '2': logs.push(chalk.yellow('몬스터에게서 도망칩니다.'));
+      case '2':if(getRandom(1,100)>60){
+        const pa = player.attack(monster);
+        const pa1 = player.doubleatk(monster);
+        logs.push(chalk.redBright(`몬스터에게 ${pa}의 피해를 입혔습니다.`));
+        logs.push(chalk.redBright(`몬스터에게 ${pa1}의 피해를 입혔습니다. 몬스터의 남은 HP: ${monster.hp}`));
+        if (monster.hp <= 0) {
+          console.log(chalk.redBright(`몬스터에게 ${pa}의 피해를 입혔습니다.`))
+          console.log(chalk.redBright(`몬스터에게 ${pa1}의 피해를 입혔습니다. 몬스터의 남은 HP: ${monster.hp=0}`))
+          console.log(chalk.yellow(`몬스터를 쓰러트렸습니다.`))
+          break;
+        }
+          else {
+            const ma = monster.attack(player);
+            logs.push(chalk.blueBright(`몬스터에게 ${ma}의 피해를 입었습니다. 플레이어의 남은 HP: ${player.hp}`));
+          }
+          break;
+      }
+      else {
+        logs.push(chalk.redBright('연속공격을 실패했습니다'))
+        const ma = monster.attack(player);
+          logs.push(chalk.blueBright(`몬스터에게 ${ma}의 피해를 입었습니다. 플레이어의 남은 HP: ${player.hp}`));
+        break;
+      }
+      case '3': logs.push(chalk.yellow('몬스터에게서 도망칩니다.'));
         return 'run';
     }
   }
