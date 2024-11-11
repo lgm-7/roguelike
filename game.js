@@ -89,10 +89,6 @@ class Item {
       console.log(chalk.yellow('포션을 획득했습니다. 포션을 사용하면 5~10 HP를 얻습니다'));
     }
   }
-
-  def(player,defdmg) {
-   
-  }
 }
 
 function displayStatus(stage, player, monster) {
