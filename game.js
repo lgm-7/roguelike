@@ -198,9 +198,9 @@ const battle = async (stage, player, monster) => {
        if (itemChoice === '1') {
         if(player.potion>0){
         const healing = player.usePotion()
-        logs.push(chalk.blueBright(`포션을 사용하여 HP가 ${healing} 증가되었습니다. 남은 포션 수: ${player.potion}`))
+        logs.push(chalk.yellow(`포션을 사용하여 HP가 ${healing} 증가되었습니다. 남은 포션 수: ${player.potion}`))
         } else {
-          logs.push(chalk.red('포션이 없습니다.'));
+          logs.push(chalk.yellow('포션이 없습니다.'));
         }
        }
        break;
@@ -230,7 +230,7 @@ export async function startGame() {
         player.heal(getRandom(20, 40));
         item.get(player)
         stage++
-        await new Promise(resolve => setTimeout(resolve, 2000))
+        await new Promise(resolve => setTimeout(resolve, 2500))
       }
     }
     else if (result === 'run') {
