@@ -86,8 +86,8 @@ class Player {
 
 class Monster {
   constructor(stage) {
-    this.hp = 30 + (stage - 1) * 15 + Math.floor(Math.random() * 10);
-    this.damage = 2 + (stage - 1) * 1 + Math.floor(Math.random() * 2);
+    this.hp = 30 + (stage - 1) * 15 + getRandom(0,14);
+    this.damage = 2 + (stage - 1) * 1 + getRandom(0,2);
     this.frozen = false;
   }
 
@@ -116,7 +116,7 @@ class Item {
         console.log(chalk.yellow('이미 단검을 가지고있습니다.'));
       }
     }
-
+ 
     if (getRandom(1, 100) > 70) {   //HP증가
       player.items.potion += 1;
       console.log(chalk.yellow('HP증가 포션을 획득했습니다. 포션을 사용하면 5~10의 HP를 얻습니다'));
@@ -326,6 +326,10 @@ const battle = async (stage, player, monster) => {
           if (player.items.fire > 0) {
             const firedmg = player.fireAtk(monster)
             logs.push(chalk.redBright(`화염 포션을 사용하여 몬스터에게 ${firedmg}의 데미지를 입혔습니다. 남은 포션 수: ${player.items.fire}`))
+            if (monster.hp <= 0) {
+              console.log(chalk.redBright(`화염 포션을 사용하여 몬스터에게 ${firedmg}의 데미지를 입혔습니다. 남은 포션 수: ${player.items.fire}`))
+              console.log(chalk.yellow(`몬스터를 쓰러트렸습니다.`))
+            }
           } else {
             logs.push(chalk.yellow('화염 포션이 없습니다.'));
           }
@@ -378,6 +382,7 @@ export async function startGame() {
       }
     }
     if (player.hp <= 0) {
+      console.log(chalk.blueBright('플레이어가 몬스터에 공격을 맞고 쓰러졌다'));
       console.log(chalk.red('게임 오버'));
       break;
     }
