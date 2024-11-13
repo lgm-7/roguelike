@@ -17,6 +17,8 @@ class Player {
       ice: 0,
       shield: 0,
     }
+    this.fire = false;
+    this.debuf = false;
   }
 
   attack(monster) {
@@ -104,6 +106,36 @@ class Monster {
   takeDamage(damage) {
     this.hp -= damage;
   }
+
+  skeleton() {
+    this.troll = false;
+    this.wicth = false;
+    this.salamader = false;
+  }
+
+  
+
+  witch(player) {
+    player.debuf = true
+  }
+
+  salamader(player) {
+    if(getRandom(1,100)>90){ player.fire = 3 }
+    if(player.fire > 0) { 
+      player.hp -= 1 
+      player.fire --
+    }
+  }
+}
+class Troll extends Monster {
+  constructor(stage) {
+  super(stage)
+}
+  heal() {
+    heal = getRandom(1,5);
+    this.hp += heal
+    console.log(chalk.redBright(`트롤이 ${heal}의 HP를 회복 했습니다.`))
+  }
 }
 
 class Item {
@@ -188,7 +220,7 @@ const battle = async (stage, player, monster) => {
           const aatk = player.addAtk(monster)
           logs.push(chalk.redBright(`단검소지 효과로 몬스터에게 ${aatk}의 추가피해를 입혔습니다. 몬스터의 남은 HP: ${monster.hp}`));
         }
-        // 몬스터의 HP가 0 이하인지 체크
+        
         if (monster.hp <= 0) {
           console.log(chalk.redBright(`몬스터에게 ${pa}의 피해를 입혔습니다. 몬스터의 남은 HP: ${monster.hp = 0}`))
           if (player.items.dagger === 1) {
