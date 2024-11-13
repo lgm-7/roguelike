@@ -17,7 +17,6 @@ class Player {
       ice: 0,
       shield: 0,
     }
-
   }
 
   attack(monster) {
@@ -85,11 +84,10 @@ class Player {
   }
 }
 
-
 class Monster {
   constructor(stage) {
-    this.hp = 30 + (stage - 1) * 14;
-    this.damage = 2 + (stage - 1) * 1;
+    this.hp = 30 + (stage - 1) * 15 + Math.floor(Math.random() * 10);
+    this.damage = 2 + (stage - 1) * 1 + Math.floor(Math.random() * 2);
     this.frozen = false;
   }
 
@@ -110,7 +108,7 @@ class Monster {
 
 class Item {
   get(player, stage) {
-    if (getRandom(1, 100) > 90) {
+    if (getRandom(1, 100) > 90) {   //단검
       if (player.items.dagger === 0) {
         player.items.dagger = 1;
         console.log(chalk.yellow('단검을 획득했습니다. 몬스터에게 1~2의 데미지를 추가로 줍니다'));
@@ -118,25 +116,35 @@ class Item {
         console.log(chalk.yellow('이미 단검을 가지고있습니다.'));
       }
     }
-    if (getRandom(1, 100) > 70) {
+
+    if (getRandom(1, 100) > 70) {   //HP증가
       player.items.potion += 1;
       console.log(chalk.yellow('HP증가 포션을 획득했습니다. 포션을 사용하면 5~10의 HP를 얻습니다'));
     }
-    if (getRandom(1, 100) > 90) {
+
+    if (getRandom(1, 100) > 90) {   //화염
       player.items.fire += 1;
       console.log(chalk.yellow('화염 포션을 획득했습니다. 포션을 사용하면 몬스터에게 5~10의 데미지를 줍니다'));
     }
-    if (getRandom(1, 100) > 95) {
+
+    if (getRandom(1, 100) > 95) {   //빙결
       player.items.ice += 1;
       console.log(chalk.yellow('빙결 포션을 획득했습니다. 포션을 사용하면 1턴동안 몬스터를 얼립니다'));
     }
-    if (getRandom(1, 100) > 90) {
+
+    if (getRandom(1, 100) > 90) {   //방패
       if (player.items.shield === 0) {
         player.items.shield = 1
         console.log(chalk.yellow('방패를 획득했습니다. 몬스터로부터 1의 데미지를 경감해줍니다.'));
       } else {
         console.log(chalk.yellow('이미 방패를 가지고있습니다.'));
       }
+    }
+
+    if (getRandom(1,10000)>9999) {  //기계장치
+      console.log(chalk.magenta.bold("\n갑작스럽게 이름모를 영웅이 나타나 몬스터를 전부 처리하고 사라졌다"));
+      console.log(chalk.green.bold("게임클리어 ed3:기계장치의 신"));
+      process.exit()
     }
   }
 }
@@ -173,7 +181,7 @@ const battle = async (stage, player, monster) => {
     // 플레이어의 선택에 따라 다음 행동 처리
     logs.push(chalk.green(`${choice}를 선택하셨습니다.`));
     switch (choice) {
-      case '1':
+      case '1':  //atk
         const pa = player.attack(monster);
         logs.push(chalk.redBright(`몬스터에게 ${pa}의 피해를 입혔습니다. 몬스터의 남은 HP: ${monster.hp}`));
         if (player.items.dagger === 1) {
@@ -199,7 +207,8 @@ const battle = async (stage, player, monster) => {
           }
         }
         break;
-      case '2':
+
+      case '2':  //doubleatk
         if (getRandom(1, 100) > 60) {
           const pa = player.attack(monster);
           const pa1 = player.doubleatk(monster);
@@ -241,14 +250,15 @@ const battle = async (stage, player, monster) => {
           }
           break;
         }
-      case '3': if (getRandom(1, 100) > 35) {
+
+      case '3': if (getRandom(1, 100) > 35) {  //def
         player.def()
         const ma = monster.attack(player);
         if (ma === 0) {
           logs.push(chalk.blue('몬스터가 빙결되어 공격하지 못했습니다.'));
         } else {
           player.items.shield === 1 ? player.Shield() : '';
-          logs.push(chalk.blueBright(`방어에 성공하여 몬스터에게 ${ma / 2}`) + chalk.gray(`${player.items.shield === 1 ? ' -1' : ''}`) + chalk.blueBright(`의 피해를 입었습니다. 플레이어의 남은 HP: ${player.hp}`));
+          logs.push(chalk.blueBright(`방어에 성공하여 몬스터에게 ${Math.floor(ma / 2)}`) + chalk.gray(`${player.items.shield === 1 ? ' -1' : ''}`) + chalk.blueBright(`의 피해를 입었습니다. 플레이어의 남은 HP: ${player.hp}`));
         }
         const pa = player.attack(monster);
         logs.push(chalk.redBright(`반격으로 몬스터에게 ${pa}의 피해를 입혔습니다. 몬스터의 남은 HP: ${monster.hp}`));
@@ -258,7 +268,7 @@ const battle = async (stage, player, monster) => {
         }
         if (monster.hp <= 0) {
           player.items.shield === 1 ? player.Shield() : '';
-          console.log(chalk.blueBright(`방어에 성공하여 몬스터에게 ${ma / 2}`) + chalk.gray(`${player.items.shield === 1 ? ' -1' : ''}`) + chalk.blueBright(`의 피해를 입었습니다. 플레이어의 남은 HP: ${player.hp}`));
+          console.log(chalk.blueBright(`방어에 성공하여 몬스터에게 ${Math.floor(ma / 2)}`) + chalk.gray(`${player.items.shield === 1 ? ' -1' : ''}`) + chalk.blueBright(`의 피해를 입었습니다. 플레이어의 남은 HP: ${player.hp}`));
           console.log(chalk.redBright(`반격으로 몬스터에게 ${pa}의 피해를 입혔습니다. 몬스터의 남은 HP: ${monster.hp = 0}`))
           if (player.items.dagger === 1) {
             const aatk = player.addAtk(monster)
@@ -268,7 +278,6 @@ const battle = async (stage, player, monster) => {
           break;
         }
         break;
-
       } else {
         logs.push(chalk.redBright('방어에 실패했습니다'))
         const ma = monster.attack(player);
@@ -279,9 +288,9 @@ const battle = async (stage, player, monster) => {
           logs.push(chalk.blueBright(`몬스터에게 ${ma}`) + chalk.gray(`${player.items.shield === 1 ? ' -1' : ''}`) + chalk.blueBright(`의 피해를 입었습니다. 플레이어의 남은 HP: ${player.hp}`));
         }
         break;
-
       }
-      case '4': if (getRandom(1, 100) > 95) {
+
+      case '4': if (getRandom(1, 100) > 95) { //run
         logs.push(chalk.yellow('몬스터에게서 도망칩니다.'));
         return 'run';
       } else {
@@ -295,7 +304,8 @@ const battle = async (stage, player, monster) => {
         }
         break;
       }
-      case '5':
+
+      case '5': //item
         console.log(chalk.magentaBright(`=====================`));
         console.log(chalk.yellow(`HP증가 포션 ${player.items.potion}개 보유중 포션을 사용하면 5~10 HP를 얻습니다`));
         console.log(chalk.yellow(`\n화염 포션 ${player.items.fire}개 보유중 포션을 사용하면 몬스터에게 5~10의 데미지를 줍니다`));
@@ -331,7 +341,6 @@ const battle = async (stage, player, monster) => {
         break;
     }
   }
-
 };
 
 export async function startGame() {
@@ -347,7 +356,7 @@ export async function startGame() {
     // 스테이지 클리어 및 게임 종료 조건
     if (monster.hp <= 0) {
       if (stage === 10) {
-        console.log(chalk.green('게임 클리어 ed1: 정복자'));
+        console.log(chalk.green.bold('게임 클리어 ed1: 정복자'));
         break;
       } else {
         console.log(chalk.green('다음 스테이지로 이동합니다'))
@@ -360,7 +369,7 @@ export async function startGame() {
     }
     else if (result === 'run') {
       if (stage === 10) {
-        console.log(chalk.green('게임 클리어 ed2: 도망자'));
+        console.log(chalk.green.bold('게임 클리어 ed2: 도망자'));
         break;
       } else {
         console.log(chalk.yellow('도망쳤습니다. 다음 스테이지로 이동합니다'))
