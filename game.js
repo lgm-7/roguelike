@@ -465,7 +465,7 @@ const battle = async (stage, player, monster) => {
         );
         console.log(
           chalk.yellow(
-            `\n화염 포션 ${player.items.fire}개 보유중 포션을 사용하면 몬스터에게 5~10의 데미지를 줍니다`,
+            `\n화염 포션 ${player.items.fire}개 보유중 포션을 사용하면 몬스터에게 5~15의 데미지를 줍니다`,
           ),
         );
         console.log(

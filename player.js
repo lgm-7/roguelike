@@ -70,7 +70,7 @@ export class Player {
     }
   
     fireAtk(monster) {
-      const fireatk = getRandom(5, 10);
+      const fireatk = getRandom(5, 15);
       monster.hp -= fireatk;
       this.items.fire -= 1;
       return fireatk;
