@@ -542,7 +542,7 @@ export async function startGame() {
     } else if (stage === 5) {
       monster = new Witch(stage);
     } else if (stage === 10) {
-      monster = new Salamader(stage);
+      monster = new Salamander(stage);
     } else {
       monster = new Monster(stage);
     }
@@ -556,7 +556,7 @@ export async function startGame() {
       } else {
         console.log(chalk.green('다음 스테이지로 이동합니다'));
         player.increaseDamage(getRandom(1, 2));
-        player.heal(getRandom(28, 40));
+        player.heal(getRandom(28, 50));
         item.get(player);
         stage++;
         await new Promise((resolve) => setTimeout(resolve, 2500));

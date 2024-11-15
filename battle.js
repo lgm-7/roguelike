@@ -1,11 +1,5 @@
-import {setItem} from "./item.js";
-import {setPlayer} from "./player.js";
-import {setMonster} from "./monster.js";
-setItem()
-setPlayer()
-setMonster()
 
-export const setBattle = async (stage, player, monster) => {
+const Battle = async (stage, player, monster) => {
     let logs = [];
     while (player.hp > 0 && monster.hp > 0) {
       console.clear();
