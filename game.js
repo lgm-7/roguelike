@@ -1,21 +1,21 @@
 import chalk from 'chalk';
 import readlineSync from 'readline-sync';
-import { player } from './player.js';
-import { item } from './item.js';
-import { troll } from './troll.js';
-import { witch } from './witch.js';
-import { salamander } from './salamander.js';
-import { monster } from './monster.js';
+import {Player} from './player.js';
+import {Item} from './item.js';
+import {Troll} from './troll.js';
+import {Witch} from './witch.js';
+import {Salamander} from './salamander.js';
+import {Monster} from './monster.js';
+import { getRandom } from './utils.js';
 
+getRandom()
+Player()
+Monster()
+Troll()
+Witch()
+Salamander()
+Item()
 
-player()
-
-monster()
-troll()
-witch()
-salamander()
-
-item()
 
 function displayStatus(stage, player, monster) {
   console.log(chalk.magentaBright(`\n=== Current Status ===`));
@@ -34,14 +34,14 @@ function monsterName(monster) {
     return '트롤';
   } else if (monster instanceof Witch) {
     return '마녀';
-  } else if (monster instanceof Salamader) {
+  } else if (monster instanceof Salamander) {
     return '샐래맨더';
   } else {
     return '스켈레톤';
   }
 }
 
-const Battle = async (stage, player, monster) => {
+const battle = async (stage, player, monster) => {
   let logs = [];
   while (player.hp > 0 && monster.hp > 0) {
     console.clear();
