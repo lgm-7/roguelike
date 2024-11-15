@@ -1,12 +1,7 @@
-import {setBattle} from "./battle.js";
-import {setPlayer} from "./player.js";
-import {setMonster} from "./monster.js";
-setBattle()
-setPlayer()
-setMonster()
+import chalk from 'chalk';
+import { getRandom } from './utils.js';
 
-export function setItem() {
-class Item {
+export class Item {
     get(player, stage) {
       if (getRandom(1, 100) > 90) {  //단검
         if (player.items.dagger === 0) {
@@ -61,4 +56,3 @@ class Item {
       }
     }
   }
-}

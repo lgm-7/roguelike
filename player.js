@@ -1,9 +1,5 @@
-import {setBattle} from "./battle.js";
-import {setItem} from "./item.js";
-import {setMonster} from "./monster.js";
-setBattle()
-setItem()
-setMonster()
+import chalk from 'chalk';
+import { getRandom } from './utils.js';
 
 export class Player {
     constructor() {
