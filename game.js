@@ -1,12 +1,12 @@
 import chalk from 'chalk';
 import readlineSync from 'readline-sync';
-import {Player} from './player.js';
-import {Item} from './item.js';
-import {Troll} from './monsterList/troll.js';
-import {Witch} from './monsterList/witch.js';
-import {Salamander} from './monsterList/salamander.js';
-import {Monster} from './monster.js';
-import {getRandom} from './utils.js';
+import { Player } from './player.js';
+import { Item } from './item.js';
+import { Troll } from './monsterList/troll.js';
+import { Witch } from './monsterList/witch.js';
+import { Salamander } from './monsterList/salamander.js';
+import { Monster } from './monster.js';
+import { getRandom } from './utils.js';
 import { Attack } from './playerChoice/atk.js';
 import { DoubleAttack } from './playerChoice/doubleatk.js';
 import { Defence } from './playerChoice/def.js';
@@ -37,7 +37,7 @@ function monsterName(monster) {
   }
 }
 
-const battle = async (stage, player, monster,result) => {
+const battle = async (stage, player, monster, result) => {
   let logs = [];
   while (player.hp > 0 && monster.hp > 0) {
     console.clear();
@@ -56,28 +56,28 @@ const battle = async (stage, player, monster,result) => {
     logs.push(chalk.green(`${choice}를 선택하셨습니다.`));
     switch (choice) {
       case '1': //atk
-        Attack(player,monster,logs)
+        Attack(player, monster, logs);
         break;
 
       case '2': //doubleatk
-       DoubleAttack(player,monster,logs)
+        DoubleAttack(player, monster, logs);
         break;
 
       case '3': //def
-        Defence(player,monster,logs)
+        Defence(player, monster, logs);
         break;
 
       case '4': //run
-        result = Run(player,monster,logs)
+        result = Run(player, monster, logs);
         break;
 
       case '5': //item
-        Useitem(player,monster,logs)
+        Useitem(player, monster, logs);
         break;
     }
 
-    if(result === 'run') {
-      return 'run'
+    if (result === 'run') {
+      return 'run';
     }
   }
 };

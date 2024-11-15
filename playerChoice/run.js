@@ -1,11 +1,11 @@
 import chalk from 'chalk';
 import { getRandom } from '../utils.js';
-import {Troll} from '../monsterList/troll.js';
-import {Witch} from '../monsterList/witch.js';
-import {Salamander} from '../monsterList/salamander.js';
+import { Troll } from '../monsterList/troll.js';
+import { Witch } from '../monsterList/witch.js';
+import { Salamander } from '../monsterList/salamander.js';
 
-export const Run = (player,monster,logs) => {
-if (player.debuf) {
+export const Run = (player, monster, logs) => {
+  if (player.debuf) {
     const ma = monster.attack(player);
     player.debuf = false;
     player.items.shield === 1 ? player.Shield() : '';
@@ -34,6 +34,7 @@ if (player.debuf) {
             chalk.blueBright(`의 피해를 입었습니다. 플레이어의 남은 HP: ${player.hp}`),
         );
         player.fire--;
+        //몬스터 특수능력
         if (monster instanceof Troll) {
           const msheal = monster.heal();
           logs.push(
@@ -65,4 +66,4 @@ if (player.debuf) {
       }
     }
   }
-}
+};

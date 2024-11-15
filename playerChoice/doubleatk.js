@@ -1,11 +1,11 @@
 import chalk from 'chalk';
 import { getRandom } from '../utils.js';
-import {Troll} from '../monsterList/troll.js';
-import {Witch} from '../monsterList/witch.js';
-import {Salamander} from '../monsterList/salamander.js';
+import { Troll } from '../monsterList/troll.js';
+import { Witch } from '../monsterList/witch.js';
+import { Salamander } from '../monsterList/salamander.js';
 
-export const DoubleAttack = (player,monster,logs) => {
-if (player.debuf) {
+export const DoubleAttack = (player, monster, logs) => {
+  if (player.debuf) {
     const ma = monster.attack(player);
     player.debuf = false;
     player.items.shield === 1 ? player.Shield() : '';
@@ -21,9 +21,7 @@ if (player.debuf) {
       const pa1 = player.doubleatk(monster);
       logs.push(chalk.redBright(`몬스터에게 ${pa}의 피해를 입혔습니다.`));
       logs.push(
-        chalk.redBright(
-          `몬스터에게 ${pa1}의 피해를 입혔습니다. 몬스터의 남은 HP: ${monster.hp}`,
-        ),
+        chalk.redBright(`몬스터에게 ${pa1}의 피해를 입혔습니다. 몬스터의 남은 HP: ${monster.hp}`),
       );
       if (player.items.dagger === 1) {
         const aatk = player.addAtk(monster);
@@ -49,7 +47,7 @@ if (player.debuf) {
           );
         }
         console.log(chalk.yellow(`몬스터를 쓰러트렸습니다.`));
-       
+        //몬스터 반격
       } else {
         const ma = monster.attack(player);
         if (ma === 0) {
@@ -63,6 +61,7 @@ if (player.debuf) {
               chalk.blueBright(`의 피해를 입었습니다. 플레이어의 남은 HP: ${player.hp}`),
           );
         }
+        //몬스터 특수능력
         if (monster instanceof Troll) {
           const msheal = monster.heal();
           logs.push(
@@ -92,7 +91,6 @@ if (player.debuf) {
           }
         }
       }
-      
     } else {
       logs.push(chalk.redBright('연속공격을 실패했습니다'));
       const ma = monster.attack(player);
@@ -137,4 +135,4 @@ if (player.debuf) {
       }
     }
   }
-}
+};
