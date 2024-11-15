@@ -5,8 +5,7 @@ setBattle()
 setItem()
 setMonster()
 
-export function setPlayer() {
-class Player {
+export class Player {
     constructor() {
       this.hp = 100;
       this.damage = 3;
@@ -94,4 +93,3 @@ class Player {
       this.defence = true;
     }
   }
-}
