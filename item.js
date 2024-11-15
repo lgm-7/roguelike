@@ -15,7 +15,7 @@ export class Item {
       if (getRandom(1, 100) > 70) {  //HP증가
         player.items.potion += 1;
         console.log(
-          chalk.yellow('HP증가 포션을 획득했습니다. 포션을 사용하면 10~20의 HP를 얻습니다'),
+          chalk.yellow('HP증가 포션을 획득했습니다. 포션을 사용하면 5~20의 HP를 얻습니다'),
         );
       }
   

@@ -6,16 +6,7 @@ import {Troll} from './troll.js';
 import {Witch} from './witch.js';
 import {Salamander} from './salamander.js';
 import {Monster} from './monster.js';
-import { getRandom } from './utils.js';
-
-getRandom()
-Player()
-Monster()
-Troll()
-Witch()
-Salamander()
-Item()
-
+import {getRandom} from './utils.js';
 
 function displayStatus(stage, player, monster) {
   console.log(chalk.magentaBright(`\n=== Current Status ===`));
@@ -132,7 +123,7 @@ const battle = async (stage, player, monster) => {
                 );
               }
             }
-            if (monster instanceof Salamader) {
+            if (monster instanceof Salamander) {
               if (getRandom(1, 100) > 60) {
                 monster.fire(player);
                 logs.push(
@@ -223,7 +214,7 @@ const battle = async (stage, player, monster) => {
                   );
                 }
               }
-              if (monster instanceof Salamader) {
+              if (monster instanceof Salamander) {
                 if (getRandom(1, 100) > 60) {
                   monster.fire(player);
                   logs.push(
@@ -267,7 +258,7 @@ const battle = async (stage, player, monster) => {
                 );
               }
             }
-            if (monster instanceof Salamader) {
+            if (monster instanceof Salamander) {
               if (getRandom(1, 100) > 60) {
                 monster.fire(player);
                 logs.push(
@@ -386,7 +377,7 @@ const battle = async (stage, player, monster) => {
                   );
                 }
               }
-              if (monster instanceof Salamader) {
+              if (monster instanceof Salamander) {
                 if (getRandom(1, 100) > 60) {
                   monster.fire(player);
                   logs.push(
@@ -450,7 +441,7 @@ const battle = async (stage, player, monster) => {
                   );
                 }
               }
-              if (monster instanceof Salamader) {
+              if (monster instanceof Salamander) {
                 if (getRandom(1, 100) > 60) {
                   monster.fire(player);
                   logs.push(
@@ -506,13 +497,13 @@ const battle = async (stage, player, monster) => {
             const firedmg = player.fireAtk(monster);
             logs.push(
               chalk.redBright(
-                `화염 포션을 사용하여 몬스터에게 ${firedmg}의 데미지를 입혔습니다. 남은 포션 수: ${player.items.fire}`,
+                `화염 포션을 사용하여 몬스터에게 ${firedmg}의 데미지를 입혔습니다. \n몬스터의 남은 HP: ${monster.hp} 남은 포션 수: ${player.items.fire}`,
               ),
             );
             if (monster.hp <= 0) {
               console.log(
                 chalk.redBright(
-                  `화염 포션을 사용하여 몬스터에게 ${firedmg}의 데미지를 입혔습니다. 남은 포션 수: ${player.items.fire}`,
+                  `화염 포션을 사용하여 몬스터에게 ${firedmg}의 데미지를 입혔습니다. \n몬스터의 남은 HP: ${monster.hp=0} 남은 포션 수: ${player.items.fire}`,
                 ),
               );
               console.log(chalk.yellow(`몬스터를 쓰러트렸습니다.`));
