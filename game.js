@@ -61,7 +61,7 @@ class Player {
   }
 
   usePotion() {
-    const healing = getRandom(10, 20);
+    const healing = getRandom(5, 20);
     this.heal(healing);
     this.items.potion -= 1;
     return healing;
@@ -653,7 +653,7 @@ const battle = async (stage, player, monster) => {
         console.log(chalk.magentaBright(`=====================`));
         console.log(
           chalk.yellow(
-            `HP증가 포션 ${player.items.potion}개 보유중 포션을 사용하면 5~10 HP를 얻습니다`,
+            `HP증가 포션 ${player.items.potion}개 보유중 포션을 사용하면 5~20 HP를 얻습니다`,
           ),
         );
         console.log(
@@ -749,7 +749,7 @@ export async function startGame() {
       } else {
         console.log(chalk.green('다음 스테이지로 이동합니다'));
         player.increaseDamage(getRandom(1, 2));
-        player.heal(getRandom(28, 50));
+        player.heal(getRandom(28, 40));
         item.get(player);
         stage++;
         await new Promise((resolve) => setTimeout(resolve, 2500));
