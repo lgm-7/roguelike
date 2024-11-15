@@ -1,4 +1,4 @@
-import { Monster } from './monster.js';
+import { Monster } from '../monster.js';
 
 export class Witch extends Monster {
     constructor(stage) {

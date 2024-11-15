@@ -1,8 +1,8 @@
 import chalk from 'chalk';
-import { getRandom } from './utils.js';
-import {Troll} from './troll.js';
-import {Witch} from './witch.js';
-import {Salamander} from './salamander.js';
+import { getRandom } from '../utils.js';
+import {Troll} from '../monsterList/troll.js';
+import {Witch} from '../monsterList/witch.js';
+import {Salamander} from '../monsterList/salamander.js';
 
 export const Run = (player,monster,logs) => {
 if (player.debuf) {
@@ -17,8 +17,7 @@ if (player.debuf) {
     );
     player.fire--;
   } else {
-    if (getRandom(1, 100) > 0) {
-      logs.push(chalk.yellow('몬스터에게서 도망칩니다.'));
+    if (getRandom(1, 100) > 95) {
       player.fire--;
       return 'run';
     } else {
@@ -44,7 +43,7 @@ if (player.debuf) {
           );
         }
         if (monster instanceof Witch) {
-          if (getRandom(1, 100) > 0) {
+          if (getRandom(1, 100) > 75) {
             monster.debuf(player);
             logs.push(
               chalk.blueBright(

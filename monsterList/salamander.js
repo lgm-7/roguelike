@@ -1,4 +1,4 @@
-import { Monster } from './monster.js';
+import { Monster } from '../monster.js';
 
 export class Salamander extends Monster {
     constructor(stage) {

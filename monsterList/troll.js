@@ -1,5 +1,5 @@
-import { Monster } from './monster.js';
-import { getRandom } from './utils.js';
+import { Monster } from '../monster.js';
+import { getRandom } from '../utils.js';
 
 export class Troll extends Monster {
     constructor(stage) {

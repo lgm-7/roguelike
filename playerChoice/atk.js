@@ -1,8 +1,8 @@
 import chalk from 'chalk';
-import { getRandom } from './utils.js';
-import {Troll} from './troll.js';
-import {Witch} from './witch.js';
-import {Salamander} from './salamander.js';
+import { getRandom } from '../utils.js';
+import {Troll} from '../monsterList/troll.js';
+import {Witch} from '../monsterList/witch.js';
+import {Salamander} from '../monsterList/salamander.js';
 
 export const Attack = (player, monster, logs) => {
     if (player.debuf) {

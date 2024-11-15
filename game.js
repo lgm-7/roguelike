@@ -2,16 +2,16 @@ import chalk from 'chalk';
 import readlineSync from 'readline-sync';
 import {Player} from './player.js';
 import {Item} from './item.js';
-import {Troll} from './troll.js';
-import {Witch} from './witch.js';
-import {Salamander} from './salamander.js';
+import {Troll} from './monsterList/troll.js';
+import {Witch} from './monsterList/witch.js';
+import {Salamander} from './monsterList/salamander.js';
 import {Monster} from './monster.js';
 import {getRandom} from './utils.js';
-import { Attack } from './atk.js';
-import { DoubleAttack } from './doubleatk.js';
-import { Defence } from './def.js';
-import { Run } from './run.js';
-import { Useitem } from './useitem.js';
+import { Attack } from './playerChoice/atk.js';
+import { DoubleAttack } from './playerChoice/doubleatk.js';
+import { Defence } from './playerChoice/def.js';
+import { Run } from './playerChoice/run.js';
+import { Useitem } from './playerChoice/useitem.js';
 
 function displayStatus(stage, player, monster) {
   console.log(chalk.magentaBright(`\n=== Current Status ===`));
@@ -37,7 +37,7 @@ function monsterName(monster) {
   }
 }
 
-const battle = async (stage, player, monster) => {
+const battle = async (stage, player, monster,result) => {
   let logs = [];
   while (player.hp > 0 && monster.hp > 0) {
     console.clear();
@@ -68,12 +68,16 @@ const battle = async (stage, player, monster) => {
         break;
 
       case '4': //run
-        Run(player,monster,logs)
+        result = Run(player,monster,logs)
         break;
 
       case '5': //item
         Useitem(player,monster,logs)
         break;
+    }
+
+    if(result === 'run') {
+      return 'run'
     }
   }
 };
@@ -115,7 +119,7 @@ export async function startGame() {
         console.log(chalk.green.bold('게임 클리어 ed2: 도망자'));
         break;
       } else {
-        console.log(chalk.yellow('도망쳤습니다. 다음 스테이지로 이동합니다'));
+        console.log(chalk.yellow('몬스터에게서 도망쳤습니다. 다음 스테이지로 이동합니다'));
         stage++;
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
